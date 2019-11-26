@@ -1,0 +1,85 @@
+/*
+ * Copyright (C) 2015 Baidu, Inc. All Rights Reserved.
+ */
+apply plugin: 'com.android.application'
+
+repositories {
+    flatDir {
+        dir 'libs'
+    }
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+
+
+
+
+    signingConfigs {
+        debug {
+            keyAlias 'DevelopTools'
+            keyPassword '111111'
+            storeFile file('./keystore/DevelopTools.jks')
+            storePassword '111111'
+        }
+//        MD5: C1:2E:B5:7D:B4:D1:B4:25:12:24:C1:F3:AA:3D:19:64
+//        SHA1: 69:20:39:88:79:7D:CF:1E:88:60:DA:B5:93:7C:E2:0E:CD:15:04:31
+//        SHA256: 5C:6F:73:9C:D7:B4:2F:02:9A:5D:D5:7E:D1:4A:EC:6A:6A:06:54:40:27:66:F0:EF:3E:B0:B8:EF:A3:77:4B:23
+//        签名算法名称: SHA256withRSA
+//        版本: 3
+        release {
+            keyAlias 'DevelopTools'
+            keyPassword '111111'
+            storeFile file('./keystore/DevelopTools.jks')
+            storePassword '111111'
+        }
+    }
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            signingConfig signingConfigs.debug
+        }
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            signingConfig signingConfigs.release
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        androidTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+    defaultConfig {
+        applicationId "com.wxq.developtools"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation(name: 'qrcodereaderview-release', ext: 'aar')
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+}
